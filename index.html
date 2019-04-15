@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Google Analytics Test Site</title>
+<!-- Google Analytics -->
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+
+// Creates a default tracker.
+ga('create', 'UA-132535659-1', 'auto',);
+ga('set', 'userId', 'johan@vine.co.za');
+
+// Check if the UID is set and log it to console.
+ga(function(tracker) {
+  var userId = tracker.get('userId');
+  console.log(userId);
+});
+
+// Send johan@vine.co.za to GA
+ga('send', 'pageview');
+
+// Send johan@vine.co.za to UBX using the IBM snippet
+
+ga(function() {
+		var tracker = ga.getByName("pageview");
+		var originalSendHitTask = tracker.get("sendHitTask");
+		tracker.set("sendHitTask", function(model) {
+			originalSendHitTask(model);
+			var payLoad = model.get("hitPayload");
+			console.log("model=" + JSON.stringify(model));
+			google_ubx.sendEventFromPayload(payLoad, identifiersMapperArray);
+		});
+	});
+
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+<!-- End Google Analytics -->
+
+<!-- UBX Capture piece (this is unique to your provisioning)-->
+<script type="text/javascript" src="//commercelibs.ibm.com/common/ubxCapture.js"></script>
+<script type="text/javascript"> ubxCapture.setID("3d4563e9-a373-442b-a2a6-ac5762888b7e"); </script>
+
+</head>
+
+<body>
+	<h1>This a demo site for GA/UBX Testing</h1>
+</body>
+</html>
