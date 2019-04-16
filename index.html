@@ -1,49 +1,224 @@
-<!doctype html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Google Analytics Test Site</title>
-<!-- Google Analytics -->
+<html><head>
+<!-- Start  UBX GA integration Javascript files -->
+<script async="" src="https://leonard009w.000webhostapp.com/analytics.js"></script>
+<!-- End of UBX GA integration Javascript files -->
 <script>
-window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-
-// Creates a default tracker.
-ga('create', 'UA-132535659-1', 'auto',);
-ga('set', 'userId', 'johan@vine.co.za');
-
-// Check if the UID is set and log it to console.
-ga(function(tracker) {
-  var userId = tracker.get('userId');
-  console.log(userId);
-});
-
-// Send johan@vine.co.za to GA
+// *** THIS IS ONLY TO GET THE EMAIL WHEN OPENING THE PAGE. DO NOT CONSIDER THIS PIECE OF CODE ***
+/*globals ga */
+var person = 'UBXtest@gmail.com';
+person = prompt("Enter the email to be inserted as identifier", 'UBXtest@gmail.com');
+// *** Start of  Google Analytics Tracking snippet ***
+ (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 ga('send', 'pageview');
-
-// Send johan@vine.co.za to UBX using the IBM snippet
-
+ga('create', 'UA-132535659-1', 'auto');
+// *** Added to enable ecommerce events send to GA 
+ga('require', 'ec');
+// *** End Google Analytics Tracking snippet -->
+// *** dimension starts here
+var dimensionValue = 'SOME_DIMENSION_VALUE';
+ga('set', 'dimension8', dimensionValue);
+//get the name (without @)
+var n = person.indexOf("@");
+var name_new_column = person.substr(0, n);
+// *** Start Javascript snippet for UBX GA integration -->   
+var identifiersMapper = [];
+identifiersMapper.push({"name":"Email", "value":person}); 
+identifiersMapper.push({"name":"custom_column", "value":name_new_column}); 
 ga(function() {
-		var tracker = ga.getByName("pageview");
-		var originalSendHitTask = tracker.get("sendHitTask");
-		tracker.set("sendHitTask", function(model) {
-			originalSendHitTask(model);
-			var payLoad = model.get("hitPayload");
-			console.log("model=" + JSON.stringify(model));
-			google_ubx.sendEventFromPayload(payLoad, identifiersMapperArray);
-		});
-	});
-
+    var tracker = ga.getByName("UBX_TESTER");
+    var originalSendHitTask = tracker.get("sendHitTask");
+    tracker.set("sendHitTask", function(model) {
+        originalSendHitTask(model);
+        var payLoad = model.get("hitPayload");
+        console.log("model=" + JSON.stringify(model));
+        google_ubx.sendEventFromPayload(payLoad,identifiersMapper);
+        });
+});
+// *** End Javascript snippet for UBX GA integration --> 
+// *** Scripts to send events -->
+    
+function addMyProd() {
+var prodId = '001.01.0001';
+var prodName = 'iphone7';
+var prodCategory = 'phones';
+var ContactConsent = "email,opt-in";
+    
+ga('create', 'UA-132535659-1', 'auto');
+ga("require", "ec");
+ga("ec:addProduct", {
+  "id": prodId,
+  "name": prodName,
+  "price": "555.00",
+  "brand": "Apple",
+  "category": prodCategory,
+  "variant": "black",
+  "dimension1": "plus",
+  "quantity": 150.00,
+  "contactConsent": ContactConsent
+});
+ga("ec:setAction", "add");
+ga("send", "event", "Add Item to Cart", "click", "addToCart"); 
+}
+function viewMyProd() {
+var prodId = '001.01.0002';
+var prodName = 'MacBookPro';
+var prodCategory = 'Laptops';
+    
+ga('create', 'UA-132535659-1', 'auto');
+ga("require", "ec");
+ga("ec:addProduct", {
+  "id": prodId,
+  "name": prodName,
+  "price": "555.00",
+  "brand": "Apple",
+  "category": prodCategory,
+  "variant": "black",
+  "dimension1": "plus",
+  "quantity": 151.00
+});
+ga('ec:setAction', 'detail');
+ga("send", "event", "View the Product", "click", "product View"); 
+        
+}
+    
+function PageViewtest() {
+    
+ga('create', 'UA-132535659-1', 'auto'); 
+ga('send', 'event', 'Videos', 'VideoPaused', 'Video Demo MackBook');    
+ga('ec:setAction', 'videoPaused');
+}
+function PageLaunched() {
+    
+ga('create', 'UA-132535659-1', 'auto'); 
+ga('send', 'event', 'Videos', 'videoLaunched', 'Video SAMSUNG');    
+}
+function PagePlayed() {
+ga('create', 'UA-132535659-1', 'auto'); 
+ga('send', 'event', 'Videos', 'VideoPlayed', 'Video LG');   
+}
+function PageCompleted() {
+ga('create', 'UA-132535659-1', 'auto'); 
+ga('send', 'event', 'Videos', 'videoCompleted', 'Video LENOVO');    
+}
+function purchase() {
+ var orderID = 'CAMOOO456';
+ 
+var orderTotal = 'ONEPLUS';
+var interactionId = 'MOBILE';
+var currency = 'INR';   
+ga('create', 'UA-132535659-1', 'auto');
+ga("ec:purchase", {              
+  'id': orderID,                  
+  'name': orderTotal, 
+  'category': interactionId,
+  'caur': currency,   
+  'brand': 'Google',         
+  'variant': 'black',   
+  'price': '29.20',               
+  'coupon': 'APPARELSALE',          
+  'quantity': 100.00,
+  'cu':'reais'
+});
+ga('ec:setAction', 'purchase');
+ga("send", "event", "purchase", "purchase", "product purchase");
+ga('create', 'UA-132535659-1');
+ga('require', 'ec');
+ga('ec:addProduct', {               // Provide product details in an productFieldObject.
+  'id': 'P12345',                   // Product ID (string).
+  'name': 'Android Warhol T-Shirt', // Product name (string).
+  'category': 'Apparel',            // Product category (string).
+  'brand': 'Google',                // Product brand (string).
+  'variant': 'black',               // Product variant (string).
+  'price': '29.20',                 // Product price (currency).
+  'coupon': 'APPARELSALE',          // Product coupon (string).
+  'quantity': 1                     // Product quantity (number).
+});
+ga('ec:addProduct', {               // Provide product details in an productFieldObject.
+  'id': 'PAAA222',                   // Product ID (string).
+  'name': 'Apple Warhol T-Shirt', // Product name (string).
+  'category': 'Apparel',            // Product category (string).
+  'brand': 'Google',                // Product brand (string).
+  'variant': 'white',               // Product variant (string).
+  'price': '15.20',                 // Product price (currency).
+  'coupon': 'APPARELSALE',          // Product coupon (string).
+  'quantity': 3                     // Product quantity (number).
+});
+ga('ec:setAction', 'purchase', {          // Transaction details are provided in an actionFieldObject.
+  'id': 'T12345',                         // (Required) Transaction id (string).
+  'affiliation': 'Google Store - Online', // Affiliation (string).
+  'revenue': '37.39',                     // Revenue (currency).
+  'tax': '2.85',                          // Tax (currency).
+  'shipping': '5.34',                     // Shipping (currency).
+  'coupon': 'SUMMER2013'                  // Transaction coupon (string).
+});
+ga('send', 'purchase', 'purchase', 'product purchase');
+//ga('send', 'purchase', 'purchase', 'product purchase');
+//ga('send', 'purchase');     // Send transaction data with initial pageview.
+}
 </script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-<!-- End Google Analytics -->
-
-<!-- UBX Capture piece (this is unique to your provisioning)-->
 <script type="text/javascript" src="//commercelibs.ibm.com/common/ubxCapture.js"></script>
 <script type="text/javascript"> ubxCapture.setID("3d4563e9-a373-442b-a2a6-ac5762888b7e"); </script>
-
 </head>
-
 <body>
-	<h1>This a demo site for GA/UBX Testing</h1>
-</body>
-</html>
+<h1> UBX Integration with Google Analytics </h1>
+<hr>
+<br>
+<table>
+<tbody>
+<tr>
+<td> <button onclick="addMyProd()">Add this product to card</button> </td> <!-- Working -->
+</tr>
+<tr><td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr><tr>
+<td> <button onclick="viewMyProd()">View this product </button> </td> <!-- Working -->
+</tr>
+<!-- /////////////// Not Tested /////////////////
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td> <button onclick="PageViewtest()">Send Video Paused Event </button> </td>
+</tr>
+////////////////////////-->
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td> <button onclick="purchase()">Cart Purchase </button> </td> <!-- Working -->
+</tr>
+<!-- /////////////  Not Tested ///////////////////////////
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td> <button onclick="PageLaunched()">Send Video Paused Launched </button> </td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td> <button onclick="PagePlayed()">Send Video Played Event </button> </td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td> <button onclick="PageCompleted()">Send Video Completed Event </button> </td>
+</tr>
+//////////////////////////////////-->
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+ 
+</body></html>
