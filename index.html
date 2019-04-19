@@ -14,7 +14,7 @@ person = prompt("Enter the email to be inserted as identifier", 'UBXtest@gmail.c
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 ga('send', 'pageview');
 ga('create', 'UA-132535659-1', 'auto');
-// *** Added to enable ecommerce events send to GA 
+// *** Added to enable ecommerce events send to GA
 ga('require', 'ec');
 // *** End Google Analytics Tracking snippet -->
 // *** dimension starts here
@@ -23,10 +23,10 @@ ga('set', 'dimension8', dimensionValue);
 //get the name (without @)
 var n = person.indexOf("@");
 var name_new_column = person.substr(0, n);
-// *** Start Javascript snippet for UBX GA integration -->   
+// *** Start Javascript snippet for UBX GA integration -->
 var identifiersMapper = [];
-identifiersMapper.push({"name":"Email", "value":person}); 
-identifiersMapper.push({"name":"custom_column", "value":name_new_column}); 
+identifiersMapper.push({"name":"Email", "value":person});
+identifiersMapper.push({"name":"custom_column", "value":name_new_column});
 ga(function() {
     var tracker = ga.getByName("UBX_TESTER");
     var originalSendHitTask = tracker.get("sendHitTask");
@@ -37,15 +37,15 @@ ga(function() {
         google_ubx.sendEventFromPayload(payLoad,identifiersMapper);
         });
 });
-// *** End Javascript snippet for UBX GA integration --> 
+// *** End Javascript snippet for UBX GA integration -->
 // *** Scripts to send events -->
-    
+
 function addMyProd() {
 var prodId = '001.01.0001';
 var prodName = 'iphone7';
 var prodCategory = 'phones';
 var ContactConsent = "email,opt-in";
-    
+
 ga('create', 'UA-132535659-1', 'auto');
 ga("require", "ec");
 ga("ec:addProduct", {
@@ -60,13 +60,13 @@ ga("ec:addProduct", {
   "contactConsent": ContactConsent
 });
 ga("ec:setAction", "add");
-ga("send", "event", "Add Item to Cart", "click", "addToCart"); 
+ga("send", "event", "Add Item to Cart", "click", "addToCart");
 }
 function viewMyProd() {
 var prodId = '001.01.0002';
 var prodName = 'MacBookPro';
 var prodCategory = 'Laptops';
-    
+
 ga('create', 'UA-132535659-1', 'auto');
 ga("require", "ec");
 ga("ec:addProduct", {
@@ -80,45 +80,45 @@ ga("ec:addProduct", {
   "quantity": 151.00
 });
 ga('ec:setAction', 'detail');
-ga("send", "event", "View the Product", "click", "product View"); 
-        
+ga("send", "event", "View the Product", "click", "product View");
+
 }
-    
+
 function PageViewtest() {
-    
-ga('create', 'UA-132535659-1', 'auto'); 
-ga('send', 'event', 'Videos', 'VideoPaused', 'Video Demo MackBook');    
+
+ga('create', 'UA-132535659-1', 'auto');
+ga('send', 'event', 'Videos', 'VideoPaused', 'Video Demo MackBook');
 ga('ec:setAction', 'videoPaused');
 }
 function PageLaunched() {
-    
-ga('create', 'UA-132535659-1', 'auto'); 
-ga('send', 'event', 'Videos', 'videoLaunched', 'Video SAMSUNG');    
+
+ga('create', 'UA-132535659-1', 'auto');
+ga('send', 'event', 'Videos', 'videoLaunched', 'Video SAMSUNG');
 }
 function PagePlayed() {
-ga('create', 'UA-132535659-1', 'auto'); 
-ga('send', 'event', 'Videos', 'VideoPlayed', 'Video LG');   
+ga('create', 'UA-132535659-1', 'auto');
+ga('send', 'event', 'Videos', 'VideoPlayed', 'Video LG');
 }
 function PageCompleted() {
-ga('create', 'UA-132535659-1', 'auto'); 
-ga('send', 'event', 'Videos', 'videoCompleted', 'Video LENOVO');    
+ga('create', 'UA-132535659-1', 'auto');
+ga('send', 'event', 'Videos', 'videoCompleted', 'Video LENOVO');
 }
 function purchase() {
  var orderID = 'CAMOOO456';
- 
+
 var orderTotal = 'ONEPLUS';
 var interactionId = 'MOBILE';
-var currency = 'INR';   
+var currency = 'INR';
 ga('create', 'UA-132535659-1', 'auto');
-ga("ec:purchase", {              
-  'id': orderID,                  
-  'name': orderTotal, 
+ga("ec:purchase", {
+  'id': orderID,
+  'name': orderTotal,
   'category': interactionId,
-  'caur': currency,   
-  'brand': 'Google',         
-  'variant': 'black',   
-  'price': '29.20',               
-  'coupon': 'APPARELSALE',          
+  'caur': currency,
+  'brand': 'Google',
+  'variant': 'black',
+  'price': '29.20',
+  'coupon': 'APPARELSALE',
   'quantity': 100.00,
   'cu':'reais'
 });
@@ -158,6 +158,57 @@ ga('send', 'purchase', 'purchase', 'product purchase');
 //ga('send', 'purchase', 'purchase', 'product purchase');
 //ga('send', 'purchase');     // Send transaction data with initial pageview.
 }
+
+
+function abandonedCart() {
+ga('create', 'UA-132535659-1', 'auto');
+ga("require", "ec");
+ga('ec:addProduct', {               // Provide product details in a productFieldObject.
+  'id': 'P12345',                   // Product ID (string).
+  'name': 'Android Warhol T-Shirt', // Product name (string).
+  'category': 'Apparel',            // Product category (string).
+  'brand': 'Google',                // Product brand (string).
+  'variant': 'Black',               // Product variant (string).
+  'position': 1,                    // Product position (number).
+  'dimension1': 'Member'            // Custom dimension (string).
+});
+
+// Add the step number and additional info about the checkout to the action.
+ga('ec:setAction', 'checkout_option', {'step': 1, 'option': 'Visa'});
+	
+ga('send', 'event', 'Checkout', 'Option', {
+    hitCallback: function() {
+      // advance to next page
+    },
+});
+	
+}
+	
+function abandonedCartRepurchase() {
+ga('create', 'UA-132535659-1', 'auto');
+ga("require", "ec");
+ga('ec:addProduct', {               // Provide product details in an productFieldObject.
+  'id': 'P12345',                   // Product ID (string).
+  'name': 'Android Warhol T-Shirt', // Product name (string).
+  'category': 'Apparel',            // Product category (string).
+  'brand': 'Google',                // Product brand (string).
+  'variant': 'black',               // Product variant (string).
+  'price': '29.20',                 // Product price (currency).
+  'quantity': 1                     // Product quantity (number).
+});
+
+// Add the step number and additional info about the checkout to the action.
+ga('ec:setAction', 'checkout_option', {'step': 2, 'option': 'Paid'});
+	
+ga('send', 'event', 'Checkout', 'Option', {
+    hitCallback: function() {
+      // advance to next page
+    },
+});
+	
+}
+
+
 </script>
 <script type="text/javascript" src="//commercelibs.ibm.com/common/ubxCapture.js"></script>
 <script type="text/javascript"> ubxCapture.setID("3d4563e9-a373-442b-a2a6-ac5762888b7e"); </script>
@@ -218,7 +269,10 @@ ga('send', 'purchase', 'purchase', 'product purchase');
 <td>&nbsp;</td>
 <td>&nbsp;</td>
 </tr>
+	<tr>
+		<td><button onclick="abandonedCart()">Create Last Step Visa</button> </td>
+	</tr>
 </tbody>
 </table>
- 
+
 </body></html>
