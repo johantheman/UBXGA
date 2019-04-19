@@ -9,7 +9,6 @@ Supports the following Ecommerce Events:
 
 -Purchase
 
+-Last Step Visa (ec plugin)
 
-Testing Next:
-
--CartAbandonment
+---
